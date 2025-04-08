@@ -1,17 +1,17 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import requests
 import os
 
 app = Flask(__name__)
 
-# Número de WhatsApp autorizado (cambia si lo necesitas)
+# Número de WhatsApp autorizado
 NUMEROS_AUTORIZADOS = ["whatsapp:+528715193928"]
 
-# Carga la IP de tu PC desde una variable de entorno
+# Carga IP de tu PC (Tailscale) desde variable de entorno
 TAILSCALE_PC_URL = os.getenv("LOCAL_SQL_ENDPOINT", "")
 
 @app.route("/whatsapp", methods=["POST"])
-def whatsapp():
+def whatsapp_webhook():
     data = request.form
     mensaje = data.get("Body", "").strip()
     remitente = data.get("From", "").strip()
@@ -35,8 +35,13 @@ def whatsapp():
             "codigo": codigo,
             "cantidad": cantidad
         })
-        print("✅ Petición enviada a local:", response.text)
-        return f"Petición enviada: {codigo} - {cantidad}", response.status_code
+        print("✅ Petición enviada al servidor local:", response.text)
+        return jsonify({"status": "ok", "response": response.text}), 200
     except Exception as e:
         print("🚫 Error al conectar con servidor local:", str(e))
         return f"Error al conectar con servidor local: {str(e)}", 500
+
+# Ruta de prueba opcional para debug
+@app.route("/", methods=["GET"])
+def home():
+    return "Webhook activo en /whatsapp", 200
