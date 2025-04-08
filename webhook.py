@@ -4,10 +4,10 @@ import requests
 app = Flask(__name__)
 
 # Solo permitir estos números autorizados de WhatsApp (opcional)
-NUMEROS_AUTORIZADOS = ["whatsapp:+34XXXXXXXXX"]  # <-- pon tu número aquí
+NUMEROS_AUTORIZADOS = ["whatsapp:+528715193928"]  # <-- pon tu número aquí
 
 # IP Tailscale de tu PC local donde corre el script SQL
-TAILSCALE_PC_URL = "http://100.X.X.X:5001/ejecutar"  # <-- cambia esto
+TAILSCALE_PC_URL = "http://100.72.42.36:5001/ejecutar"  # <-- cambia esto
 
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp():
