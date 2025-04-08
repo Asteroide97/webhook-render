@@ -5,7 +5,9 @@ app = Flask(__name__)
 
 NUMEROS_AUTORIZADOS = ["whatsapp:+528715193928"]  # <-- ¡Correcto!
 
-TAILSCALE_PC_URL = "http://100.72.42.36:5001/ejecutar"  # <-- ¡Correcto! (si es tu IP actual de Tailscale)
+import os
+TAILSCALE_PC_URL = os.getenv("LOCAL_SQL_ENDPOINT", "")
+  # <-- ¡Correcto! (si es tu IP actual de Tailscale)
 
 @app.route("/whatsapp", methods=["POST"])
 def whatsapp():
